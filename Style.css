@@ -1,0 +1,22 @@
+body {
+    font-family: Arial;
+    background: #111;
+    color: white;
+    text-align: center;
+}
+
+input, button {
+    padding: 10px;
+    margin: 5px;
+}
+
+.parkour {
+    border: 1px solid white;
+    margin: 10px;
+    padding: 10px;
+}
+
+img {
+    width: 200px;
+    border-radius: 10px;
+}
