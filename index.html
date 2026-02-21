@@ -6,29 +6,29 @@
 </head>
 <body>
 
-<h1> Yeeps Hardest Parkour List</h1>
+<header>
+    <h1>🏆 Yeeps Hardest Parkour List</h1>
+    <button onclick="showAdmin()">Admin</button>
+</header>
 
-<div id="loginBox">
-    <input type="text" id="username" placeholder="Username">
-    <button onclick="login()">Login</button>
+<div id="parkourList" class="grid"></div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel" class="admin hidden">
+    <h2>Admin Panel</h2>
+
+    <input type="password" id="adminPass" placeholder="Admin Password">
+    <button onclick="loginAdmin()">Login</button>
+
+    <div id="adminControls" class="hidden">
+        <input type="text" id="parkourName" placeholder="Parkour Name">
+        <input type="number" id="difficulty" placeholder="Difficulty">
+        <input type="text" id="imageUrl" placeholder="Image URL">
+
+        <button onclick="addParkour()">Add Level</button>
+    </div>
 </div>
 
-<h2 id="welcome"></h2>
-
-<div id="parkourList"></div>
-
-<h2>Add New Parkour</h2>
-
-<input type="text" id="parkourName" placeholder="Parkour Name">
-<input type="number" id="difficulty" placeholder="Difficulty (1-100)">
-<input type="text" id="imageUrl" placeholder="Image URL">
-
-<button onclick="addParkour()">Add</button>
-
-<h2>Leaderboard</h2>
-<div id="leaderboard"></div>
-
 <script src="script.js"></script>
-
 </body>
 </html>
