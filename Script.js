@@ -1,88 +1,55 @@
-let currentUser = localStorage.getItem("user");
+const ADMIN_PASSWORD = "joewalmartisacat"; 
 
 let parkours = JSON.parse(localStorage.getItem("parkours")) || [];
-let players = JSON.parse(localStorage.getItem("players")) || {};
+let adminLogged = false;
 
-function login() {
-    let name = document.getElementById("username").value;
-    if (!name) return;
-
-    currentUser = name;
-    localStorage.setItem("user", name);
-
-    if (!players[name]) {
-        players[name] = { points: 0 };
-    }
-
-    savePlayers();
-    updateUI();
-}
-
-function savePlayers() {
-    localStorage.setItem("players", JSON.stringify(players));
-}
-
-function saveParkours() {
+function save() {
     localStorage.setItem("parkours", JSON.stringify(parkours));
 }
 
-function addParkour() {
-    let name = document.getElementById("parkourName").value;
-    let diff = parseInt(document.getElementById("difficulty").value);
-    let img = document.getElementById("imageUrl").value;
+function render() {
+    const list = document.getElementById("parkourList");
+    list.innerHTML = "";
 
-    parkours.push({ name, diff, img });
     parkours.sort((a, b) => b.diff - a.diff);
 
-    saveParkours();
-    renderParkours();
-}
-
-function beatParkour(points) {
-    if (!currentUser) {
-        alert("Login first!");
-        return;
-    }
-
-    players[currentUser].points += points;
-    savePlayers();
-    renderLeaderboard();
-}
-
-function renderParkours() {
-    let container = document.getElementById("parkourList");
-    container.innerHTML = "";
-
     parkours.forEach((p, i) => {
-        container.innerHTML += `
-            <div class="parkour">
-                <h3>#${i + 1} ${p.name}</h3>
+        list.innerHTML += `
+            <div class="card">
                 <img src="${p.img}">
+                <h3>#${i + 1} ${p.name}</h3>
                 <p>Difficulty: ${p.diff}</p>
-                <button onclick="beatParkour(${p.diff})">I Beat This</button>
             </div>
         `;
     });
 }
 
-function renderLeaderboard() {
-    let board = document.getElementById("leaderboard");
-    board.innerHTML = "";
-
-    let sorted = Object.entries(players)
-        .sort((a, b) => b[1].points - a[1].points);
-
-    sorted.forEach(([name, data], i) => {
-        board.innerHTML += `<p>#${i + 1} ${name} — ${data.points} pts</p>`;
-    });
+function showAdmin() {
+    document.getElementById("adminPanel").classList.toggle("hidden");
 }
 
-function updateUI() {
-    document.getElementById("welcome").innerText =
-        currentUser ? "Welcome " + currentUser : "";
+function loginAdmin() {
+    const pass = document.getElementById("adminPass").value;
 
-    renderParkours();
-    renderLeaderboard();
+    if (pass === ADMIN_PASSWORD) {
+        adminLogged = true;
+        document.getElementById("adminControls").classList.remove("hidden");
+    } else {
+        alert("Wrong password");
+    }
 }
 
-updateUI();
+function addParkour() {
+    if (!adminLogged) return;
+
+    const name = document.getElementById("parkourName").value;
+    const diff = parseInt(document.getElementById("difficulty").value);
+    const img = document.getElementById("imageUrl").value;
+
+    parkours.push({ name, diff, img });
+
+    save();
+    render();
+}
+
+render();
